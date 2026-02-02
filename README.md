@@ -27,7 +27,26 @@ A Mixture of Experts transformer I built for fast pretraining. Uses modern techn
 
 The "Active" column is how many params actually run per forward pass. That's what determines your speed/memory.
 
-## Getting the dataset
+## Setup
+
+### 1. Install dependencies
+
+```bash
+pip install torch numpy tokenizers huggingface_hub
+```
+
+Optional but recommended for faster attention:
+```bash
+pip install flash-attn --no-build-isolation
+```
+
+### 2. Get the tokenizer
+
+Download `pile_tokenizer.json` from my tokenizers repo: https://github.com/Supergoatscriptguy/Tokenizers
+
+Put it in the same folder as the scripts.
+
+### 3. Get training data
 
 I have a preprocessed dataset on HuggingFace: [SuperGoatScriptGuy/PreprocessedMIXED](https://huggingface.co/datasets/SuperGoatScriptGuy/PreprocessedMIXED)
 
@@ -48,11 +67,12 @@ snapshot_download(
 
 Or download more if you want a real training run. Each shard is ~82MB with ~20M tokens.
 
-The shards are numpy arrays with shape `(sequences, 2048)` containing token IDs from a GPT-2 tokenizer.
+The shards are numpy arrays with shape `(sequences, 2048)` containing token IDs.
 
 ## Training
 
-Basic training run:
+Once you have the tokenizer and data:
+
 ```bash
 python train.py --model_size tiny --data_dir ./data --batch_size 32 --grad_accum 4
 ```
@@ -67,6 +87,8 @@ Useful flags:
 
 ## Generation
 
+After training, test your checkpoint:
+
 ```bash
 python generate.py --checkpoint checkpoint_5000.pt
 ```
@@ -79,21 +101,3 @@ This drops you into an interactive prompt. Or pass `--prompt "your text"` for a 
 - `train.py` — Training loop
 - `fast_dataloader.py` — Streaming dataloader for the .npy shards
 - `generate.py` — Text generation
-- `pile_tokenizer.json` — GPT-2 tokenizer
-
-## Tokenizer
-
-Grab `pile_tokenizer.json` from my tokenizers repo: https://github.com/Supergoatscriptguy/Tokenizers
-
-Put it in the same folder as the scripts.
-
-## Requirements
-
-```
-torch>=2.0
-numpy
-tokenizers
-huggingface_hub
-```
-
-Optional: `pip install flash-attn --no-build-isolation` for faster attention (takes a few min to compile).

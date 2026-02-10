@@ -1,6 +1,6 @@
 # Tachyon 2
 
-A Mixture of Experts transformer I built for fast pretraining. Uses modern techniques like GQA, RoPE, Flash Attention, and SwiGLU.
+A Mixture of Experts transformer I built for fast pretraining. Uses modern techniques like GQA, RoPE, Flash Attention, and SwiGLU. One of the Acceleron series alongside [Pion](https://github.com/Supergoatscriptguy/Pion) (dense) and [Lepton](https://github.com/Supergoatscriptguy/Lepton) (experimental).
 
 ## What's in it
 
